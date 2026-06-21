@@ -37,7 +37,8 @@ import {
 
 type Processor = ReturnType<typeof createProcessor>
 
-const cachedCompilerForFormat: Record<string, Processor | void> = Object.create(null)
+const cachedCompilerForFormat: Record<string, Processor | void> =
+  Object.create(null)
 
 type MdxOptions = NextraConfig['mdxOptions'] &
   Pick<ProcessorOptions, 'jsx' | 'outputFormat' | 'providerImportSource'>

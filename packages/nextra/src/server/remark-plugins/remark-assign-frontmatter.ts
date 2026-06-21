@@ -8,7 +8,8 @@ import type { ReadingTime } from '../../types.js'
 import { CWD } from '../constants.js'
 import { getFrontMatterASTObject, isExportNode } from './remark-mdx-title.js'
 
-export const remarkAssignFrontMatter: Plugin<[], Root> = () => (ast: Root, file) => {
+export const remarkAssignFrontMatter: Plugin<[], Root> =
+  () => (ast: Root, file) => {
     const frontMatterNode = ast.children.find(node =>
       isExportNode(node, 'metadata')
     )!
