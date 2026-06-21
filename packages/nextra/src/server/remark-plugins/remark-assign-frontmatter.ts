@@ -8,21 +8,17 @@ import type { ReadingTime } from '../../types.js'
 import { CWD } from '../constants.js'
 import { getFrontMatterASTObject, isExportNode } from './remark-mdx-title.js'
 
-export const remarkAssignFrontMatter: Plugin<
-  [{ lastCommitTime?: number }],
-  Root
-> =
-  ({ lastCommitTime }) =>
-  (ast: Root, file) => {
+export const remarkAssignFrontMatter: Plugin<[], Root> = () => (ast: Root, file) => {
     const frontMatterNode = ast.children.find(node =>
       isExportNode(node, 'metadata')
     )!
     const frontMatter = getFrontMatterASTObject(frontMatterNode)
 
     const [filePath] = file.history
-    const { readingTime, title } = file.data as {
+    const { readingTime, title, lastCommitTime } = file.data as {
       readingTime?: ReadingTime
       title?: string
+      lastCommitTime?: number
     }
 
     const { properties } = valueToEstree({

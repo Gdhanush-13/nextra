@@ -104,14 +104,16 @@ export async function compileMdx(
   const format =
     _format === 'detect' ? (filePath.endsWith('.mdx') ? 'mdx' : 'md') : _format
 
-  const fileCompatible = filePath ? { value: rawMdx, path: filePath } : rawMdx
+  const fileCompatible = filePath
+    ? { value: rawMdx, path: filePath, data: { lastCommitTime } }
+    : rawMdx
 
   const isRemoteContent = outputFormat === 'function-body'
 
   const compiler =
     !useCachedCompiler || isRemoteContent
       ? createCompiler()
-      : (cachedCompilerForFormat[`${format}:${isPageImport}:${lastCommitTime}`] ||=
+      : (cachedCompilerForFormat[`${format}:${isPageImport}`] ||=
           createCompiler())
   const processor = compiler()
 
@@ -152,7 +154,7 @@ export async function compileMdx(
         // before mdx title
         remarkCustomHeadingId,
         remarkMdxTitle,
-        [remarkAssignFrontMatter, { lastCommitTime }] satisfies Pluggable,
+        remarkAssignFrontMatter,
         remarkGfm,
         format !== 'md' &&
           ([
